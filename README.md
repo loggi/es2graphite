@@ -1,7 +1,7 @@
 ### es2graphite
 
 es2graphite gathers elasticsearch stats and status information 
-and sends them to a graphite server.  One or more elasticsearch
+and sends them to a graphite/statsd server.  One or more elasticsearch
 hosts can be specified and requests will be round-robined between
 each server.  
 
@@ -32,8 +32,8 @@ each server.
 * metrics are sent to graphite via the pickle protocol
 
 ```
-usage: es2graphite.py [-h] [-p PREFIX] [-g GRAPHITE_HOST] [-o GRAPHITE_PORT]
-                      [-i INTERVAL] [--health-level {cluster,indices,shards}]
+usage: es2graphite.py [-h] [-p PREFIX] [-g HOST] [-o PORT] [-i INTERVAL]
+                      [-m MODE] [--health-level {cluster,indices,shards}]
                       [--shard-stats] [--segments] [-d] [-v]
                       ES_HOST [ES_HOST ...]
 
@@ -46,12 +46,11 @@ optional arguments:
   -h, --help            show this help message and exit
   -p PREFIX, --prefix PREFIX
                         graphite metric prefix. Default: es
-  -g GRAPHITE_HOST, --graphite-host GRAPHITE_HOST
-                        graphite hostname. Default: localhost
-  -o GRAPHITE_PORT, --graphite-port GRAPHITE_PORT
-                        graphite pickle protocol port. Default: 2004
+  -g HOST, --host HOST  graphite hostname. Default: localhost
+  -o PORT, --port PORT  graphite pickle protocol port. Default: 2004
   -i INTERVAL, --interval INTERVAL
                         interval in seconds. Default: 60
+  -m MODE, --mode MODE  Which mode to use: carbon-pickle, statsd
   --health-level {cluster,indices,shards}
                         The level of health metrics. Default: indices
   --shard-stats         Collect shard level stats metrics.
