@@ -167,9 +167,7 @@ def send_to_carbon_pickle(metrics):
 
 
 def send_to_statsd(metric_name, value, timestamp):
-    import statsd
-
-    stats_client = statsd.StatsClient('{{STATS_HOST}}', 8125)
+    stats_client = statsd.StatsClient(args.host, args.port)
     func = stats_client.gauge if not 'time' in metric_name else \
         stats_client.timing
     func(metric_name, value)
