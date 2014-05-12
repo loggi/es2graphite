@@ -22,6 +22,11 @@ HOST_IDX = -1
 MODE_CARBON_PICKLE = 'carbon-pickle'
 MODE_STATSD = 'statsd'
 
+try:
+  import statsd
+  stats_client = None
+except ImportError:
+  statsd = None
 
 def log(what, force=False):
     if args.verbose or force:
@@ -167,7 +172,7 @@ def send_to_carbon_pickle(metrics):
 
 
 def send_to_statsd(metric_name, value, timestamp):
-    stats_client = statsd.StatsClient(args.host, args.port)
+    global stats_client
     func = stats_client.gauge if not 'time' in metric_name else \
         stats_client.timing
     func(metric_name, value)
@@ -246,6 +251,12 @@ if __name__ == '__main__':
     parser.add_argument('es', nargs='+', help='elasticsearch host:port',
                         metavar='ES_HOST')
     args = parser.parse_args()
+    if args.mode == MODE_STATSD 
+        if not statsd:
+            raise SystemExit("No statsd python module found")
+        global stats_client
+        stats_client = statsd.StatsClient(args.host, args.port)
+    
     while True:
         thread.start_new_thread(get_metrics, ())
         time.sleep(args.interval)
