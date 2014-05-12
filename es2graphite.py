@@ -22,9 +22,10 @@ HOST_IDX = -1
 MODE_CARBON_PICKLE = 'carbon-pickle'
 MODE_STATSD = 'statsd'
 
+stats_client = None
 try:
   import statsd
-  stats_client = None
+
 except ImportError:
   statsd = None
 
@@ -251,7 +252,7 @@ if __name__ == '__main__':
     parser.add_argument('es', nargs='+', help='elasticsearch host:port',
                         metavar='ES_HOST')
     args = parser.parse_args()
-    if args.mode == MODE_STATSD 
+    if args.mode == MODE_STATSD:
         if not statsd:
             raise SystemExit("No statsd python module found")
         global stats_client
